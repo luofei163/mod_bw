@@ -1,18 +1,11 @@
 /*
-
 Apache2 - Mod_bw v0.92
-
 Author       : Ivan Barrera A. (Bruce)
-
 HomePage     : Http://Ivn.cl/apache
-
 Release Date : 20-Jul-2010
-
 Status       : Stable
-
 License      : Licensed under the Apache Software License v2.0
                It must be included as LICENSE in this package.
-
 Platform     : Linux/x86         (Tested with Fedora Core 4, Suse, etc)
                Linux/x86_64      (Redhat Enterprise 4)
                FreeBSD/x86       (Tested on 5.2)
@@ -20,22 +13,17 @@ Platform     : Linux/x86         (Tested with Fedora Core 4, Suse, etc)
                Solaris 8/sparc   (Some notes on compile)
                Microsoft Windows (Win XP, Win2003. Win7, Others should work)
                HP-UX 11          (Thanks to Soumendu Bhattacharya for testing)
-
 Notes        : This is a stable version of mod_bw. It should work with
                almost any MPM (tested with WinNT/prefork/Worker MPM).
-
                We are reaching the End of mod_bw series 0.x. As soon as this 
                last changes are confirmed by the users (perhaps some changes
                at request), i'll set this release to version 1.0 final.
-
 Limitations  : This mod doesn't know how fast the client is 
                downloading a file, so it just divides the bw assigned
                between the users.
                MaxConnections works only for the given scope. (i.e , all
                will limit maxconnections from all,not per ip or user)
-
 Changelog :
-
 2010-07-20 : Fixed ap_get_server_banner unknown on older apache version
 2010-05-27 : Fixed weird behaviour on Windows Hosts. (mod_bw.txt)
              Added high resolution timers for windows. (speed improvements)
@@ -45,7 +33,6 @@ Changelog :
 2010-04-28 : Bruce's Birthday Gift : A callback to the stats of the mod :)
 2010-04-06 : Fixed "Invisible" memory leak. Only seen when serving HUGE streams.
 2010-03-10 : Fixed MinBandwidth screwing limits. Another unsigned/signed screw up.
-
 */
 
 #define VERSION "0.92"
@@ -564,7 +551,7 @@ static long get_bw_rate(request_rec * r, apr_array_header_t * a)
             return e[i].rate;
 
         case T_IP:
-            if (apr_ipsubnet_test(e[i].x.ip, r->connection->remote_addr)) {
+            if (apr_ipsubnet_test(e[i].x.ip, r->connection->client_addr)) {
                 return e[i].rate;
             }
             break;
@@ -655,7 +642,7 @@ static int get_maxconn(request_rec * r, apr_array_header_t * a)
             return e[i].max;
 
         case T_IP:
-            if (apr_ipsubnet_test(e[i].x.ip, r->connection->remote_addr)) {
+            if (apr_ipsubnet_test(e[i].x.ip, r->connection->client_addr)) {
                 return e[i].max;
             }
             break;
@@ -706,7 +693,7 @@ static int get_sid(request_rec * r, apr_array_header_t * a)
             return e[i].sid;
 
         case T_IP:
-            if (apr_ipsubnet_test(e[i].x.ip, r->connection->remote_addr)) {
+            if (apr_ipsubnet_test(e[i].x.ip, r->connection->client_addr)) {
                 return e[i].sid;
             }
             break;

@@ -660,5 +660,12 @@ Contents :
  Ivan Barrera A. 
  
  Ivn Systems Software 
+
+# add by luofei
+centos7.6 
+yum install httpd-devel-2.4.6-93.el7.ns7.01.x86_64
+/bin/apxs   -i -a -c mod_bw.c
+
+
  
  
